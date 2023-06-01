@@ -1,20 +1,23 @@
 <?php
-session_start();
+ include 'includes/protect.php';
 
 $userId = $_SESSION['userId'];
 $name = $_SESSION['name'];
+$email = $_SESSION['email'];
 
 include "includes/header.php"; 
 include "includes/db.php";
 
 ?>
-
-<h4 class='text-center'>User <?php echo $name ?></h4>
+<div class="text-center">
+  <h4>Welcome, <?php echo $name ?></h4>
+  <small>( <?php echo "$email" ?>)</small>
+</div>
 
   <a href='addtask.php' class ='btn btn-primary my-4'>Add Task</a>
-  <a href='login.php' class ='btn btn-secondary my-4'>Log Out</a>
+  <a href='includes/server.php?logout=1' class ='btn btn-secondary my-4'>Log Out</a>
 
-  <table class='table table-bordered'>
+  <table class='table table-bordered table-responsive table-hover'>
     <thead>
       <tr>
         <th>#</th>
@@ -43,8 +46,8 @@ include "includes/db.php";
           <td>$name</td>
           <td>$status</td>
           <td>
-            <a href='edit.php?editid=".$id."' class='btn btn-success'>Edit</a>
-            <a href='delete.php?deleteid=".$id."' class='btn btn-danger'>Delete</a>
+            <a href='edittask.php?edittaskid=".$id."&taskname=".$name ."&status=".$status ."' class='btn btn-success'>Edit</a>
+            <a href='includes/server.php?deletetaskid=".$id."' class='btn btn-danger'>Delete</a>
           </td>
         </tr>
           ";

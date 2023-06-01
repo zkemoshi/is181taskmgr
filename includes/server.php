@@ -19,9 +19,12 @@ if(isset($_POST['register'])){
     // Check if user exist
     $sql = "SELECT * FROM user WHERE email='$email'";
 
+    // query the db
     $check_result = mysqli_query($connection, $sql);
+    
+    // check if the result has something
     $num_rows = mysqli_num_rows($check_result); 
-    echo "we here";
+
     if($num_rows>0){
       echo "User already exist";
     }else {
@@ -55,8 +58,10 @@ if(isset($_POST['login'])){
   echo "inside";
   // Check credential
   $sql = "SELECT * FROM user WHERE email='$email'";
+
   $check_result = mysqli_query($connection, $sql);
   $num_rows = mysqli_num_rows($check_result); 
+
   if($num_rows > 0){
     $row = mysqli_fetch_assoc($check_result);
     $db_password = $row['password'];
@@ -108,9 +113,49 @@ if(isset($_POST['addTask'])){
 
 
 // Updating Task --- Update Task
+if(isset($_POST['editTask'])){
+  // check for complete or not completion selection
+  $status = $_POST['completed'] == 'completed' ? 1 : 0;
+
+  // Get other data name and hidded id
+  $id = intval($_POST['taskId']);
+  $name = $_POST['name'];
+
+
+  $sql = "UPDATE task SET name='$name', status='$status' WHERE id='$id'";
+
+    // Execute the query
+    $result = mysqli_query($connection, $sql);
+
+    if($result){     
+      header('location:../index.php');
+      
+    }else {
+      echo "data not updated to database";
+    }
+
+}
+
+
+// Delete Task
+if(isset($_GET['deletetaskid'])){
+
+  $id = $_GET['deletetaskid'];
+
+  $sql = "DELETE FROM task WHERE id='$id'";
+  
+  $result = mysqli_query($connection, $sql);
+
+  if($result){
+    header('location:../index.php');
+  }else {
+    echo "Item not deleted!";
+  }
+}
 
 // Logout 
 if(isset($_GET['logout'])){
   session_destroy();
   header('location:../login.php');
 }
+
